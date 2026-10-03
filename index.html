@@ -172,6 +172,8 @@
     .quiz-options button.wrong svg * { stroke: var(--bad); fill: rgba(255, 93, 93, 0.1); }
     .quiz-result { max-width: 640px; margin: 2rem auto 0; min-height: 3.5rem; color: var(--muted); font-size: 1.05rem; }
     .quiz-result strong { color: var(--text); }
+    #quiz-reset { margin-top: 1.2rem; }
+    [hidden] { display: none !important; }
 
     /* ============ SCALES ============ */
     .ruler { position: relative; margin: 1rem 0 3rem; padding: 2.4rem 0 1.8rem; }
@@ -382,6 +384,7 @@
         <button data-shape="hexagon"><svg viewBox="0 0 64 64"><polygon points="18,8 46,8 60,32 46,56 18,56 4,32" /></svg>Hexagon</button>
       </div>
       <p class="quiz-result" aria-live="polite">Pick one. Most people get it wrong.</p>
+      <button class="btn ghost" id="quiz-reset" hidden>↺ Try again</button>
     </section>
 
     <!-- ============ 01 NOTICE ============ -->
@@ -886,7 +889,15 @@
           });
           if (b.dataset.shape !== "hexagon") b.classList.add("wrong");
           out.innerHTML = answers[b.dataset.shape];
+          reset.hidden = false;
         });
+      });
+      var reset = document.getElementById("quiz-reset"), startText = out.innerHTML;
+      reset.addEventListener("click", function () {
+        buttons.forEach(function (x) { x.disabled = false; x.classList.remove("right", "wrong"); });
+        out.innerHTML = startText;
+        reset.hidden = true;
+        buttons[0].focus();
       });
     })();
 
