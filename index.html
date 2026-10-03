@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Honeycomb Code | Geometry Project</title>
+    <title>The Honeycomb Code | 3D Geometry Project</title>
     <style>
         * {
             margin: 0;
@@ -12,471 +12,775 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #ffffff;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #e0e0e0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,50 Q300,0 600,50 T1200,50 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: wave 3s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(1200px); }
+        }
+
+        header * {
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.95;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
         nav {
-            background: #f8f9fa;
-            padding: 1rem;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
             position: sticky;
             top: 0;
-            border-bottom: 2px solid #e9ecef;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
             display: flex;
             justify-content: center;
             gap: 2rem;
             flex-wrap: wrap;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         nav a {
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
         }
 
         nav a:hover {
-            color: #764ba2;
+            color: #fff;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
         }
 
         section {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 3rem 2rem;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        section:last-child {
-            border-bottom: none;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         h2 {
             color: #667eea;
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #667eea;
-            padding-left: 1rem;
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         h3 {
             color: #764ba2;
-            font-size: 1.5rem;
-            margin: 1.5rem 0 1rem 0;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
         }
 
         p {
-            margin-bottom: 1rem;
-            font-size: 1.05rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
             line-height: 1.8;
-            color: #555;
+            color: #b0b0b0;
         }
 
-        .image-placeholder {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border: 2px dashed #667eea;
-            border-radius: 8px;
-            padding: 3rem;
-            text-align: center;
-            margin: 2rem 0;
-            color: #999;
-            font-size: 1rem;
-        }
-
-        .grid {
+        .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin: 3rem 0;
         }
 
-        .card {
-            background: #f8f9fa;
-            border-radius: 8px;
+        .content-text {
+            padding: 2rem;
+        }
+
+        .3d-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, rgba(10,14,39,0.5) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .topic-card {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .topic-3d {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(circle, rgba(102,126,234,0.15) 0%, rgba(10,14,39,0.7) 100%);
+        }
+
+        .topic-text {
             padding: 1.5rem;
-            border-left: 4px solid #667eea;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.1);
-        }
-
-        .card h4 {
+        .topic-text h4 {
             color: #667eea;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
         }
 
-        .stat {
+        .topic-text p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 1.5rem;
             margin: 2rem 0;
         }
 
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: #f8f9fa;
+        .stat-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
             border-radius: 8px;
-            border-top: 3px solid #667eea;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-box:hover {
+            border-color: rgba(102, 126, 234, 0.8);
+            transform: scale(1.05);
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
             color: #667eea;
+            font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: #999;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
-        .highlight {
-            background: #fff3cd;
-            padding: 1.5rem;
-            border-left: 4px solid #ffc107;
-            margin: 1.5rem 0;
-            border-radius: 4px;
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+            border-left: 4px solid #667eea;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            font-size: 1.1rem;
         }
 
-        ul {
+        ul, ol {
             margin-left: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .image-placeholder {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%);
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            color: #666;
+            font-size: 1rem;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         footer {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
+            border-top: 2px solid rgba(102, 126, 234, 0.2);
             color: #999;
-            border-top: 1px solid #e9ecef;
         }
 
-        .canvas-container {
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .section-divider {
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(102,126,234,0.1), transparent);
             margin: 2rem 0;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        canvas {
-            max-width: 100%;
-            height: auto;
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-
-            .stat {
-                grid-template-columns: 1fr;
-            }
-
-            nav {
-                gap: 1rem;
-            }
-
-            section {
-                padding: 2rem 1rem;
-            }
+            header h1 { font-size: 2.2rem; }
+            h2 { font-size: 2rem; }
+            .content-grid { grid-template-columns: 1fr; }
+            .3d-container { height: 350px; }
+            .stats { grid-template-columns: 1fr; }
+            nav { gap: 1rem; }
+            nav a { font-size: 0.9rem; padding: 0.4rem 0.8rem; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>🐝 The Honeycomb Code</h1>
-        <p>Why do bees build perfect hexagons? Discover the geometry and mathematics hidden in nature's most efficient architecture.</p>
+        <p>Explore the 3D geometry of nature's most efficient architecture</p>
     </header>
 
     <nav>
-        <a href="#notice">Notice</a>
-        <a href="#explain">Explain</a>
-        <a href="#subtopics">Other Examples</a>
-        <a href="#create">Create</a>
+        <a href="#notice">🔍 Notice</a>
+        <a href="#explain">📐 Explain</a>
+        <a href="#subtopics">🌍 Explore</a>
+        <a href="#create">✨ Create</a>
     </nav>
 
     <!-- NOTICE SECTION -->
-    <section id="notice">
+    <section id="notice" style="background: linear-gradient(to bottom, rgba(102,126,234,0.05) 0%, transparent 100%);">
         <h2>Notice: The Honeycomb Mystery</h2>
 
-        <h3>What I Observed</h3>
-        <p>Honeycomb is one of nature's perfect geometric structures. Each cell is an identical hexagon, fitting together with zero wasted space. Bees build this without measurement, without blueprints, without any engineering training. Yet the precision is flawless.</p>
+        <div class="content-grid">
+            <div class="content-text">
+                <h3>What I Observed</h3>
+                <p>Honeycomb is one of nature's most perfect geometric structures. Each cell is an identical hexagon, fitting together with zero wasted space. Bees build this flawlessly without measurement or blueprints.</p>
 
-        <div class="image-placeholder">
-            📸 Add your honeycomb image here — a close-up showing the hexagonal cells clearly
+                <h3>Why It Caught My Attention</h3>
+                <p>The precision is remarkable. Three questions emerged:</p>
+                <ul>
+                    <li>Why hexagons and not circles?</li>
+                    <li>What makes this shape mathematically special?</li>
+                    <li>Is there a deeper geometric principle at work?</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Central Question:</strong> Is there a mathematical reason bees build hexagons? What makes this shape more efficient than all alternatives?
+                </div>
+            </div>
+
+            <div class="3d-container" id="honeycomb3d"></div>
         </div>
 
-        <h3>Why This Caught My Attention</h3>
-        <p>The more I looked at honeycomb, the more questions emerged:</p>
-        <ul>
-            <li>Why hexagons and not circles (which are more common in nature)?</li>
-            <li>Why not squares, which are easier to think about?</li>
-            <li>What makes hexagons special enough for bees to build them instinctively?</li>
-            <li>Is this just chance, or is there mathematics behind it?</li>
-        </ul>
-
-        <div class="highlight">
-            <strong>The Central Question:</strong> Is there a mathematical reason bees build hexagons? What makes this shape more efficient than all the alternatives?
-        </div>
-
-        <h3>Quick Facts About Honeycomb</h3>
-        <div class="stat">
-            <div class="stat-item">
+        <div class="stats">
+            <div class="stat-box">
                 <div class="stat-number">120°</div>
                 <div class="stat-label">Interior Angle</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-box">
                 <div class="stat-number">6</div>
                 <div class="stat-label">Sides per Cell</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-box">
                 <div class="stat-number">3</div>
-                <div class="stat-label">Meet at Each Vertex</div>
+                <div class="stat-label">Perfect Vertex</div>
             </div>
         </div>
-    </section>
-
-    <!-- EXPLAIN SECTION -->
-    <section id="explain">
-        <h2>Explain: Why Hexagons are Perfect</h2>
-
-        <h3>The Problem Bees Are Solving</h3>
-        <p>Bees face a critical efficiency challenge: <strong>store the most honey while using the least wax.</strong></p>
-        <p>Wax is expensive. Each bee must consume about 12 pounds of honey to produce 1 pound of wax. So bees need a shape that:</p>
-        <ul>
-            <li>Maximizes storage area (for honey)</li>
-            <li>Minimizes perimeter (to use less wax)</li>
-            <li>Tiles perfectly with zero gaps (no wasted space)</li>
-            <li>Is structurally strong (to hold the honey weight)</li>
-        </ul>
-
-        <div class="highlight">
-            <strong>The Solution: Hexagons</strong> — The only shape that wins on all four criteria.
-        </div>
-
-        <h3>The Mathematics: Why Hexagons Are Optimal</h3>
-
-        <p><strong>The Area-to-Perimeter Ratio:</strong></p>
-        <p>Among all shapes that can perfectly tile a flat surface, hexagons have the best ratio of enclosed area to perimeter used.</p>
-
-        <div class="grid">
-            <div class="card">
-                <h4>Triangle</h4>
-                <p>To store the same amount of honey as one hexagon, you'd need a triangle with <strong>27% MORE perimeter.</strong></p>
-                <p>That means 27% more wax. ❌</p>
-            </div>
-            <div class="card">
-                <h4>Square</h4>
-                <p>A square needs <strong>10% MORE perimeter</strong> than a hexagon to enclose the same area.</p>
-                <p>That's still more wax than necessary. ❌</p>
-            </div>
-            <div class="card">
-                <h4>Hexagon</h4>
-                <p>Uses the LEAST perimeter for any regular polygon that tiles perfectly.</p>
-                <p>Minimum wax, maximum honey. ✅</p>
-            </div>
-        </div>
-
-        <h3>The Geometry: Perfect Tiling</h3>
-        <p>Only three regular polygons can tile a flat plane perfectly (with no gaps or overlaps):</p>
-
-        <div class="grid">
-            <div class="card">
-                <h4>Equilateral Triangle</h4>
-                <p><strong>Interior angle: 60°</strong></p>
-                <p>At each vertex: 6 triangles × 60° = 360° ✓</p>
-            </div>
-            <div class="card">
-                <h4>Square</h4>
-                <p><strong>Interior angle: 90°</strong></p>
-                <p>At each vertex: 4 squares × 90° = 360° ✓</p>
-            </div>
-            <div class="card">
-                <h4>Regular Hexagon</h4>
-                <p><strong>Interior angle: 120°</strong></p>
-                <p>At each vertex: 3 hexagons × 120° = 360° ✓</p>
-            </div>
-        </div>
-
-        <p><strong>Why 120° is special:</strong> Three hexagons meeting at a point create a perfect fit with zero waste. This geometry allows for maximum storage in the minimum space.</p>
-
-        <h3>The Physics: Structural Strength</h3>
-        <p>Hexagons aren't just mathematically efficient—they're also structurally superior. When you fill a hexagon with honey (adding weight), the load distributes evenly across all six walls. The forces spread in three primary directions, creating exceptional strength for the material used.</p>
-        <p>Compare this to a square, where corners create weak points, or a circle, which would require more material to achieve the same strength.</p>
-
-        <div class="canvas-container">
-            <p style="color: #999; margin-bottom: 1rem;">📊 Interactive Comparison: Efficiency Ratio</p>
-            <canvas id="comparisonCanvas" width="100%" height="300"></canvas>
-        </div>
-    </section>
-
-    <!-- SUBTOPICS SECTION -->
-    <section id="subtopics">
-        <h2>Where Else This Geometry Appears</h2>
-        <p>Once you see hexagons in honeycomb, you start noticing them everywhere in nature. The same mathematics that governs bee architecture appears at completely different scales, serving different purposes.</p>
-
-        <div class="grid">
-            <div class="card">
-                <h4>🌋 Basalt Columns</h4>
-                <p>When lava cools slowly, it contracts uniformly and cracks into hexagonal columns. This is the same 120° geometry as honeycomb, but scaled up to meter-tall structures. The cooling process naturally creates the most efficient packing.</p>
-                <p style="color: #999; font-size: 0.9rem;">Examples: Giant's Causeway (Ireland), Devils Postpile (California)</p>
-                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
-                    📸 Basalt columns image
-                </div>
-            </div>
-
-            <div class="card">
-                <h4>👁️ Dragonfly Compound Eyes</h4>
-                <p>Dragonflies see through thousands of hexagonal units (ommatidia) packed together. At the microscopic scale, nature uses hexagons to maximize visual resolution while minimizing weight. Same optimization principle, different application.</p>
-                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
-                    📸 Dragonfly eye microscope image
-                </div>
-            </div>
-
-            <div class="card">
-                <h4>🌿 Plant Cells</h4>
-                <p>Plant cells arrange in hexagonal patterns in stems and leaves. Even at the cellular level, hexagons appear because they minimize surface area and maximize packing efficiency—the same mathematics that governs honeycomb and basalt.</p>
-                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
-                    📸 Plant cell tessellation image
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CREATE SECTION -->
-    <section id="create">
-        <h2>Create: What I Made</h2>
-
-        <h3>My Creation</h3>
-        <p>After investigating honeycomb geometry, I created <strong>[describe what you made here: a visual comparison tool, a 3D model, an artwork, a physical structure, a data visualization, etc.]</strong></p>
 
         <div class="image-placeholder">
-            📸 Add an image of your creation here
+            📸 Add your honeycomb photograph here — close-up showing hexagonal cells
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- EXPLAIN SECTION -->
+    <section id="explain" style="background: linear-gradient(to bottom, rgba(118,75,162,0.05) 0%, transparent 100%);">
+        <h2>Explain: Why Hexagons Are Perfect</h2>
+
+        <div class="content-grid">
+            <div class="3d-container" id="comparison3d"></div>
+
+            <div class="content-text">
+                <h3>The Problem Bees Solve</h3>
+                <p><strong>Store the most honey using the least wax.</strong></p>
+                <p>Bees need a shape that:</p>
+                <ul>
+                    <li>Maximizes storage area</li>
+                    <li>Minimizes perimeter (less wax needed)</li>
+                    <li>Tiles perfectly with zero gaps</li>
+                    <li>Is structurally strong</li>
+                </ul>
+
+                <h3>The Solution</h3>
+                <p><strong>Hexagons.</strong> The only shape that wins on all four criteria.</p>
+            </div>
         </div>
 
-        <h3>How It Connects to the Mathematics</h3>
-        <p><strong>Explain how your creation reflects the honeycomb mathematics you discovered.</strong> For example:</p>
-        <ul>
-            <li>What mathematical principles did you apply?</li>
-            <li>What angles, ratios, or proportions did you use?</li>
-            <li>How does your creation demonstrate hexagon efficiency or geometry?</li>
-        </ul>
+        <h3 style="text-align: center; margin-top: 3rem;">The Mathematics</h3>
 
-        <h3>The Choices I Made</h3>
-        <p><strong>Describe specific design decisions based on your research:</strong></p>
-        <ul>
-            <li>Why did you choose the materials, colors, or dimensions you used?</li>
-            <li>What calculations or measurements guided your choices?</li>
-            <li>How do these choices reflect the mathematics of honeycomb?</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>Area-to-Perimeter Ratio:</strong> Among all shapes that tile perfectly, hexagons have the best ratio. For the same storage:
+            <ul>
+                <li>Triangle needs 27% MORE wax ❌</li>
+                <li>Square needs 10% MORE wax ❌</li>
+                <li>Hexagon uses LEAST wax ✅</li>
+            </ul>
+        </div>
 
-        <h3>What I Hope You Notice</h3>
-        <p><strong>Complete this:</strong> When you look at my work, I want you to notice...</p>
-        <p>This is your chance to direct the viewer's attention to the most important mathematical or visual aspect of your creation. What insight or question should they take away?</p>
+        <h3>Perfect Tiling at 120°</h3>
+        <p>Only three regular polygons tile a plane perfectly: triangles (60°), squares (90°), and hexagons (120°). At each vertex, three hexagons × 120° = 360°. Perfect fit. Zero waste.</p>
+
+        <div class="3d-container" id="tiling3d" style="margin: 2rem 0;"></div>
+
+        <h3>Structural Strength</h3>
+        <p>When filled with honey, a hexagon distributes load evenly. Forces spread equally in three directions, creating exceptional strength. This is why hexagons are stronger than squares or circles for the same material.</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SUBTOPICS/EXPLORATION SECTION -->
+    <section id="subtopics" style="background: linear-gradient(to bottom, rgba(102,126,234,0.05) 0%, transparent 100%);">
+        <h2>Explore: Where Else Hexagons Appear</h2>
+        <p style="text-align: center; margin-bottom: 3rem; font-size: 1.15rem;">The same mathematics that governs honeycomb appears at wildly different scales and in completely different contexts. Once you see hexagons, you see them everywhere.</p>
+
+        <div class="topic-grid">
+            <div class="topic-card">
+                <div class="topic-3d" id="basalt3d"></div>
+                <div class="topic-text">
+                    <h4>🌋 Basalt Columns</h4>
+                    <p>When lava cools slowly, it cracks into hexagonal columns. Same 120° geometry as honeycomb, but scaled up to massive structures. The cooling process naturally creates the most efficient packing pattern.</p>
+                    <p style="color: #667eea; font-size: 0.9rem; margin-top: 1rem;">Examples: Giant's Causeway (Ireland), Devils Postpile (California), Fingal's Cave (Scotland)</p>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-3d" id="dragonfly3d"></div>
+                <div class="topic-text">
+                    <h4>👁️ Dragonfly Eyes</h4>
+                    <p>Dragonflies see through thousands of hexagonal units (ommatidia) packed together. At the microscopic scale, nature uses hexagons to maximize visual resolution while minimizing weight. Same optimization principle, different application.</p>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-3d" id="plant3d"></div>
+                <div class="topic-text">
+                    <h4>🌿 Plant Cells</h4>
+                    <p>Plant cells arrange in hexagonal patterns in stems and leaves. Even at the cellular level, hexagons appear because they minimize surface area and maximize packing efficiency—pure mathematics at work in biology.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-placeholder" style="margin-top: 3rem;">
+            📸 Add images here: Basalt columns, Dragonfly compound eye, Plant cell structure
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- CREATE SECTION -->
+    <section id="create" style="background: linear-gradient(to bottom, rgba(118,75,162,0.05) 0%, transparent 100%);">
+        <h2>Create: Your Inspired Work</h2>
+
+        <div class="content-grid" style="margin: 3rem 0;">
+            <div class="content-text">
+                <h3>What I Created</h3>
+                <p><strong>[Describe what you made: a 3D model, a visualization, an artwork, a structure, a data visualization, etc.]</strong></p>
+
+                <h3>How It Connects</h3>
+                <p>Explain how your creation reflects the honeycomb mathematics:</p>
+                <ul>
+                    <li>What mathematical principles did you apply?</li>
+                    <li>What angles, ratios, or proportions did you use?</li>
+                    <li>How does it demonstrate hexagon efficiency?</li>
+                </ul>
+
+                <h3>Design Choices</h3>
+                <p><strong>Describe specific decisions based on your research:</strong></p>
+                <ul>
+                    <li>Why did you choose these materials, colors, or dimensions?</li>
+                    <li>What calculations guided your work?</li>
+                    <li>How do these reflect the mathematics of honeycomb?</li>
+                </ul>
+
+                <h3>What I Hope You Notice</h3>
+                <p>When you look at my work, I want you to notice... <strong>[What should be the viewer's takeaway?]</strong></p>
+            </div>
+
+            <div class="3d-container" id="create3d"></div>
+        </div>
+
+        <div class="image-placeholder">
+            📸 Add photos of your creation here
+        </div>
     </section>
 
     <footer>
-        <p><strong>The Honeycomb Code</strong> | Geometry Midterm Project 2026</p>
-        <p>📍 By: ATA-404</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">Mathematics is everywhere. Once you learn to see it, you can't unsee it.</p>
+        <h3>The Honeycomb Code</h3>
+        <p><strong>A Geometry Investigation | 2026</strong></p>
+        <p>Created by: <strong>ATA-404</strong></p>
+        <p style="margin-top: 1.5rem; font-style: italic;">Mathematics is everywhere. Once you learn to see it, you can't unsee it.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Comparison Chart
-        function drawComparison() {
-            const canvas = document.getElementById('comparisonCanvas');
-            if (!canvas) return;
+        // Helper function to create a 3D scene
+        function createScene(containerId, setupFn) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
-            const ctx = canvas.getContext('2d');
-            const width = canvas.offsetWidth;
-            const height = 300;
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
-            canvas.width = width;
-            canvas.height = height;
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x000000, 0);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
 
-            const shapes = [
-                { name: 'Triangle', ratio: 0.73, color: '#ff6b6b' },
-                { name: 'Square', ratio: 0.90, color: '#ffc107' },
-                { name: 'Hexagon', ratio: 1.00, color: '#667eea' }
-            ];
+            camera.position.z = 3;
 
-            const padding = 40;
-            const graphWidth = width - 2 * padding;
-            const graphHeight = height - 2 * padding;
-            const barSpacing = graphWidth / shapes.length;
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
 
-            // Draw title
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
-            ctx.textAlign = 'center';
-            ctx.fillText('Efficiency Ratio (Higher = Better)', width / 2, 25);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
 
-            // Draw bars
-            shapes.forEach((shape, i) => {
-                const x = padding + i * barSpacing + barSpacing / 2;
-                const barHeight = shape.ratio * (graphHeight - 40);
-                const barWidth = 60;
+            const pointLight = new THREE.PointLight(0x667eea, 0.5);
+            pointLight.position.set(-5, -5, 5);
+            scene.add(pointLight);
 
-                // Bar background
-                ctx.fillStyle = '#f0f0f0';
-                ctx.fillRect(x - barWidth / 2, padding + graphHeight - 40, barWidth, 40);
+            // Setup scene content
+            setupFn(scene, camera);
 
-                // Bar
-                ctx.fillStyle = shape.color;
-                ctx.fillRect(x - barWidth / 2, padding + graphHeight - 40 - barHeight, barWidth, barHeight);
-
-                // Border
-                ctx.strokeStyle = shape.color;
-                ctx.lineWidth = 2;
-                ctx.strokeRect(x - barWidth / 2, padding + graphHeight - 40 - barHeight, barWidth, barHeight);
-
-                // Label
-                ctx.fillStyle = '#333';
-                ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
-                ctx.fillText(shape.name, x, padding + graphHeight);
-
-                // Percentage
-                ctx.fillStyle = shape.color;
-                ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
-                ctx.fillText((shape.ratio * 100).toFixed(0) + '%', x, padding + graphHeight - 50 - barHeight);
+            // Handle resize
+            window.addEventListener('resize', () => {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
             });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
         }
 
-        window.addEventListener('load', drawComparison);
-        window.addEventListener('resize', drawComparison);
+        // Honeycomb 3D
+        createScene('honeycomb3d', (scene, camera) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            // Create hexagon
+            function createHexagon(x, y, scale = 1) {
+                const geometry = new THREE.CylinderGeometry(scale, scale, 0.3, 6);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0xffd700,
+                    metalness: 0.3,
+                    roughness: 0.4,
+                    emissive: 0x664400
+                });
+                const hex = new THREE.Mesh(geometry, material);
+                hex.position.set(x, y, 0);
+                hex.castShadow = true;
+                group.add(hex);
+                return hex;
+            }
+
+            // Create honeycomb pattern
+            createHexagon(-1.5, 0.8);
+            createHexagon(-0.75, 0.8);
+            createHexagon(0, 0.8);
+            createHexagon(0.75, 0.8);
+            createHexagon(1.5, 0.8);
+
+            createHexagon(-1.125, -0.2);
+            createHexagon(-0.375, -0.2);
+            createHexagon(0.375, -0.2);
+            createHexagon(1.125, -0.2);
+
+            createHexagon(-1.5, -1.2);
+            createHexagon(-0.75, -1.2);
+            createHexagon(0, -1.2);
+            createHexagon(0.75, -1.2);
+            createHexagon(1.5, -1.2);
+
+            group.rotation.x = 0.2;
+
+            const animate = () => {
+                group.rotation.z += 0.003;
+                group.rotation.x = 0.2 + Math.sin(Date.now() * 0.001) * 0.1;
+            };
+
+            const originalRender = scene.userData.animate;
+            scene.userData.animate = animate;
+        });
+
+        // Comparison 3D
+        createScene('comparison3d', (scene) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            // Triangle (left)
+            const triGeometry = new THREE.ConeGeometry(0.8, 1.5, 3);
+            const triMaterial = new THREE.MeshStandardMaterial({ color: 0xff6b6b, metalness: 0.4, roughness: 0.5 });
+            const triangle = new THREE.Mesh(triGeometry, triMaterial);
+            triangle.position.x = -1.2;
+            triangle.castShadow = true;
+            group.add(triangle);
+
+            // Square (center)
+            const boxGeometry = new THREE.BoxGeometry(1, 1.5, 0.3);
+            const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xffc107, metalness: 0.4, roughness: 0.5 });
+            const square = new THREE.Mesh(boxGeometry, boxMaterial);
+            square.castShadow = true;
+            group.add(square);
+
+            // Hexagon (right)
+            const hexGeometry = new THREE.CylinderGeometry(0.7, 0.7, 1.5, 6);
+            const hexMaterial = new THREE.MeshStandardMaterial({ color: 0x667eea, metalness: 0.4, roughness: 0.5 });
+            const hexagon = new THREE.Mesh(hexGeometry, hexMaterial);
+            hexagon.position.x = 1.2;
+            hexagon.castShadow = true;
+            group.add(hexagon);
+
+            group.rotation.x = 0.3;
+
+            const animate = () => {
+                group.rotation.z += 0.002;
+                triangle.rotation.x += 0.01;
+                square.rotation.y += 0.01;
+                hexagon.rotation.z += 0.01;
+            };
+
+            scene.userData.animate = animate;
+        });
+
+        // Tiling 3D
+        createScene('tiling3d', (scene) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            const hexagons = [];
+            for (let i = 0; i < 7; i++) {
+                const geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 6);
+                const hue = (i / 7) * 0.3 + 0.65;
+                const material = new THREE.MeshStandardMaterial({
+                    color: new THREE.Color().setHSL(hue, 0.8, 0.5),
+                    metalness: 0.3,
+                    roughness: 0.4
+                });
+                const hex = new THREE.Mesh(geometry, material);
+                hex.castShadow = true;
+
+                const angle = (i / 7) * Math.PI * 2;
+                hex.position.x = Math.cos(angle) * 1.5;
+                hex.position.y = Math.sin(angle) * 1.5;
+
+                group.add(hex);
+                hexagons.push(hex);
+            }
+
+            group.rotation.x = 0.2;
+
+            const animate = () => {
+                group.rotation.z += 0.001;
+                hexagons.forEach((hex, i) => {
+                    hex.rotation.z += 0.01;
+                    hex.position.z = Math.sin(Date.now() * 0.001 + i) * 0.3;
+                });
+            };
+
+            scene.userData.animate = animate;
+        });
+
+        // Basalt 3D
+        createScene('basalt3d', (scene) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            for (let i = 0; i < 5; i++) {
+                const geometry = new THREE.CylinderGeometry(0.4, 0.4, 2, 6);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0x444444,
+                    metalness: 0.6,
+                    roughness: 0.7
+                });
+                const column = new THREE.Mesh(geometry, material);
+                column.castShadow = true;
+
+                const angle = (i / 5) * Math.PI * 2;
+                column.position.x = Math.cos(angle) * 0.8;
+                column.position.z = Math.sin(angle) * 0.8;
+                column.position.y = -0.2;
+
+                group.add(column);
+            }
+
+            const animate = () => {
+                group.rotation.y += 0.002;
+            };
+
+            scene.userData.animate = animate;
+        });
+
+        // Dragonfly eye 3D
+        createScene('dragonfly3d', (scene) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            const sphereGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+            const sphereMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                metalness: 0.8,
+                roughness: 0.2
+            });
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphere.castShadow = true;
+            group.add(sphere);
+
+            // Add hexagonal facets
+            for (let i = 0; i < 50; i++) {
+                const geometry = new THREE.CylinderGeometry(0.15, 0.15, 0.05, 6);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0x00ff88,
+                    emissive: 0x00ff88,
+                    metalness: 0.9,
+                    roughness: 0.1
+                });
+                const facet = new THREE.Mesh(geometry, material);
+
+                const phi = Math.acos(-1 + (2 * i) / 50);
+                const theta = Math.sqrt(50 * Math.PI) * phi;
+
+                facet.position.x = 1.6 * Math.sin(phi) * Math.cos(theta);
+                facet.position.y = 1.6 * Math.sin(phi) * Math.sin(theta);
+                facet.position.z = 1.6 * Math.cos(phi);
+
+                facet.lookAt(0, 0, 0);
+                group.add(facet);
+            }
+
+            const animate = () => {
+                group.rotation.x += 0.002;
+                group.rotation.y += 0.003;
+            };
+
+            scene.userData.animate = animate;
+        });
+
+        // Plant cells 3D
+        createScene('plant3d', (scene) => {
+            const group = new THREE.Group();
+            scene.add(group);
+
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    const geometry = new THREE.CylinderGeometry(0.4, 0.4, 0.3, 6);
+                    const hue = (Math.random() * 0.2 + 0.35);
+                    const material = new THREE.MeshStandardMaterial({
+                        color: new THREE.Color().setHSL(hue, 0.6, 0.5),
+                        metalness: 0.3,
+                        roughness: 0.5
+                    });
+                    const cell = new THREE.Mesh(geometry, material);
+                    cell.castShadow = true;
+
+                    cell.position.x = x * 0.95;
+                    cell.position.y = y * 0.95;
+
+                    group.add(cell);
+                }
+            }
+
+            const animate = () => {
+                group.rotation.z += 0.001;
+                group.children.forEach(cell => {
+                    cell.position.z = Math.sin(Date.now() * 0.001 + cell.position.x + cell.position.y) * 0.2;
+                });
+            };
+
+            scene.userData.animate = animate;
+        });
+
+        // Create placeholder 3D for CREATE section
+        createScene('create3d', (scene) => {
+            const geometry = new THREE.TetrahedronGeometry(1, 3);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x764ba2,
+                metalness: 0.5,
+                roughness: 0.5,
+                emissive: 0x764ba2,
+                emissiveIntensity: 0.2
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.castShadow = true;
+            scene.add(mesh);
+
+            const animate = () => {
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.008;
+                mesh.position.z = Math.sin(Date.now() * 0.001) * 0.3;
+            };
+
+            scene.userData.animate = animate;
+        });
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
