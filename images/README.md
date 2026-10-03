@@ -6,7 +6,7 @@ The website shows a placeholder until a photo with that name exists.
 | ✓ | File name | What it shows | Source and license |
 |---|---|---|---|
 | ☑ | `honeycomb.jpg` | Honeybees on their comb | Alabama Extension, CC0 |
-| ☑ | `honeycomb-cells.jpg` | Empty honeycomb cells close up | Jolán Dénes, CC BY-SA 2.5 |
+| ☑ | `honeycomb-cells.jpg` | Bees on a comb of hexagonal cells ("Guarded Treasure") | Jurikowski, CC BY-SA 3.0 |
 | ☑ | `dragonfly-eye.jpg` | Dragonfly compound eye | Solomon.christopher, CC BY-SA 3.0 |
 | ☑ | `plant-cells.jpg` | Six-sided moss leaf cells (*Bryum capillare*) | Des Callaghan, CC BY-SA 4.0 |
 | ☑ | `dragonfly-wing.jpg` | Dragonfly (*Pantala flavescens*) with wing veins | Jeevan Jose, CC BY-SA 4.0 |
