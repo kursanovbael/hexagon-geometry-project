@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Honeycomb Code</title>
+  <meta name="description" content="Why bees build hexagons: a Notice / Explain / Create project on honeycomb geometry." />
+
+  <style>
+    /* ============ THEME COLORS (change these to restyle everything) ============ */
+    :root {
+      --bg: #0b0818;
+      --bg-soft: #141029;
+      --card: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #ece8ff;
+      --muted: #a9a3c9;
+      --purple: #8b5cf6;
+      --blue: #3b82f6;
+      --pink: #ec4899;
+      --gradient: linear-gradient(135deg, var(--purple), var(--blue) 50%, var(--pink));
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Soft glowing blobs in the background */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.25), transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(236, 72, 153, 0.18), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.2), transparent 45%);
+    }
+
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ============ NAVIGATION ============ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; justify-content: center; gap: 1.5rem;
+      padding: 0.9rem 1rem;
+      background: rgba(11, 8, 24, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--pink); }
+
+    /* ============ HERO ============ */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 3rem; position: relative;
+    }
+    #hex-canvas { width: min(380px, 80vw); height: min(380px, 80vw); }
+    #hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
+      line-height: 1.1; margin-top: 1rem;
+      animation: float 5s ease-in-out infinite;
+    }
+    #hero p { color: var(--muted); max-width: 560px; margin: 1rem auto 2rem; font-size: 1.15rem; }
+    .btn {
+      display: inline-block; padding: 0.85rem 2rem; border-radius: 999px;
+      background: var(--gradient); color: #fff; text-decoration: none; font-weight: 600;
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 45px rgba(236, 72, 153, 0.6); }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* ============ SECTIONS ============ */
+    section.block { max-width: 1100px; margin: 0 auto; padding: 6rem 1.5rem; }
+    .tag {
+      display: inline-block; padding: 0.25rem 0.9rem; border: 1px solid var(--purple);
+      border-radius: 999px; color: var(--purple); font-size: 0.75rem;
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    h2 { font-size: clamp(1.9rem, 5vw, 3rem); line-height: 1.2; margin-bottom: 1rem; }
+    h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .lead { color: var(--muted); max-width: 720px; margin-bottom: 2.5rem; font-size: 1.1rem; }
+
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(6px);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--pink); }
+    .card p { color: var(--muted); }
+
+    .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .split { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: center; }
+
+    /* ============ IMAGE PLACEHOLDERS ============
+       When you add a real photo, the <img> fills the box.
+       Until then, the dashed hexagon-ish placeholder text shows. */
+    .img-box {
+      position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden;
+      border: 2px dashed var(--purple);
+      background: repeating-linear-gradient(60deg, rgba(139,92,246,.08) 0 14px, rgba(59,130,246,.08) 14px 28px);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; color: var(--muted); font-size: 0.9rem; padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .img-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .img-box.main { margin-bottom: 0; }
+
+    /* ============ EXPLAIN SECTION ============ */
+    .formula {
+      font-family: "Cambria Math", "Courier New", monospace;
+      background: var(--bg-soft); border-left: 4px solid var(--pink);
+      padding: 1rem 1.25rem; border-radius: 8px; margin: 1rem 0; color: #fff; overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem; }
+    th, td { padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--pink); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; }
+    .best { color: #fff; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+
+    /* ============ FOOTER ============ */
+    footer {
+      text-align: center; padding: 3rem 1rem; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.95rem;
+    }
+
+    /* Fade-in on scroll (JS adds .visible) */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 600px) {
+      nav { gap: 0.9rem; }
+      nav a { font-size: 0.7rem; }
+      section.block { padding: 4rem 1.25rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============ NAVIGATION ============ -->
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#notice">Notice</a>
+    <a href="#explain">Explain</a>
+    <a href="#create">Create</a>
+  </nav>
+
+  <!-- ============ HERO: 3D ROTATING HEXAGON ============ -->
+  <header id="hero">
+    <canvas id="hex-canvas" aria-label="Rotating 3D hexagon"></canvas>
+    <h1 class="gradient-text">The Honeycomb Code</h1>
+    <p>Why does nature keep choosing the hexagon? A journey through bees, basalt, dragonflies and plants.</p>
+    <a class="btn" href="#notice">Start Exploring ↓</a>
+  </header>
+
+  <main>
+    <!-- ============ NOTICE ============ -->
+    <section id="notice" class="block">
+      <span class="tag">01 · Notice</span>
+      <h2 class="reveal">Why do bees build <span class="gradient-text">hexagons</span>?</h2>
+      <p class="lead reveal">
+        Look inside any beehive and you will find thousands of perfectly identical six-sided cells,
+        packed together with no gaps. Bees did not study geometry. Evolution found the answer for them.
+      </p>
+
+      <!-- MAIN IMAGE: honeycomb photo -->
+      <div class="split reveal">
+        <div class="img-box main">
+          <!-- TO ADD YOUR PHOTO: save it as images/honeycomb.jpg, then delete this comment's
+               surrounding placeholder text and keep the <img> line. -->
+          <img src="images/honeycomb.jpg" alt="Close-up of a honeycomb" onerror="this.remove()" />
+          <span>📷 MAIN PHOTO<br />Honeycomb<br /><small>images/honeycomb.jpg</small></span>
+        </div>
+        <div>
+          <h3>What I noticed</h3>
+          <p style="color:var(--muted)">
+            Every cell has six equal walls and the cells share those walls. Honeycomb wax is expensive
+            for bees to make (they eat roughly 8 kg of honey to produce 1 kg of wax), so using the
+            least material for the most storage matters a lot.
+          </p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:4rem" class="reveal">The hexagon shows up everywhere</h3>
+      <div class="grid" style="margin-top:1.5rem">
+        <!-- SUBTOPIC 1: Basalt -->
+        <article class="card reveal">
+          <div class="img-box">
+            <img src="images/basalt.jpg" alt="Basalt columns" onerror="this.remove()" />
+            <span>📷 Basalt columns<br /><small>images/basalt.jpg</small></span>
+          </div>
+          <h3>Basalt Columns</h3>
+          <p>As lava cools it shrinks and cracks. Cracks spread to relieve stress most efficiently
+             when they meet at about 120°, forming hexagonal columns like the Giant's Causeway.</p>
+        </article>
+
+        <!-- SUBTOPIC 2: Dragonfly eye -->
+        <article class="card reveal">
+          <div class="img-box">
+            <img src="images/dragonfly.jpg" alt="Dragonfly compound eye" onerror="this.remove()" />
+            <span>📷 Dragonfly eye<br /><small>images/dragonfly.jpg</small></span>
+          </div>
+          <h3>Dragonfly Eyes</h3>
+          <p>A dragonfly's compound eye holds up to about 30,000 tiny lenses, called ommatidia, packed
+             in a hexagonal pattern so nothing is missed and no space is wasted.</p>
+        </article>
+
+        <!-- SUBTOPIC 3: Plant cells -->
+        <article class="card reveal">
+          <div class="img-box">
+            <img src="images/plant-cells.jpg" alt="Plant cells under a microscope" onerror="this.remove()" />
+            <span>📷 Plant cells<br /><small>images/plant-cells.jpg</small></span>
+          </div>
+          <h3>Plant Cells</h3>
+          <p>Under a microscope many plant tissues show cells that average out to about six
+             neighbors each. Growing cells push against each other and settle into near-hexagonal packing.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ EXPLAIN ============ -->
+    <section id="explain" class="block">
+      <span class="tag">02 · Explain</span>
+      <h2 class="reveal">The <span class="gradient-text">mathematics</span> of efficiency</h2>
+      <p class="lead reveal">
+        Only three regular polygons can tile a flat surface with no gaps: triangles, squares and
+        hexagons. So which one is best?
+      </p>
+
+      <div class="split">
+        <div class="card reveal">
+          <h3>Same area, shorter wall</h3>
+          <p>Fix the area of each cell at 1 unit². The perimeter (wax needed) for each shape:</p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>Shape</th><th>Perimeter</th><th>vs. hexagon</th></tr>
+              <tr><td>Triangle</td><td>4.56</td><td>+20%</td></tr>
+              <tr><td>Square</td><td>4.00</td><td>+3.5%</td></tr>
+              <tr class="best"><td>Hexagon</td><td>3.72</td><td>best</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <h3>The formulas</h3>
+          <p>For a regular hexagon with side length <em>s</em>:</p>
+          <div class="formula">Area = (3√3 / 2) · s² ≈ 2.598 · s²</div>
+          <div class="formula">Perimeter = 6 · s</div>
+          <p>Each interior angle is 120°, and three cells meet at every corner (3 × 120° = 360°), so
+             there are no gaps.</p>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:1.5rem">
+        <h3>The Honeycomb Conjecture</h3>
+        <p>The idea that the hexagonal grid divides a plane into equal-area regions with the least
+           total perimeter was stated by Marcus Terentius Varro in antiquity and finally proved by
+           mathematician Thomas Hales in 1999. Bees are nature's proof of concept.</p>
+      </div>
+    </section>
+
+    <!-- ============ CREATE ============ -->
+    <section id="create" class="block">
+      <span class="tag">03 · Create</span>
+      <h2 class="reveal">My <span class="gradient-text">inspired</span> creation</h2>
+      <p class="lead reveal">
+        This is where I show something I made, inspired by the hexagon patterns I noticed and explained.
+      </p>
+
+      <!-- MY CREATION: replace images/my-creation.jpg with your work -->
+      <div class="split reveal">
+        <div class="img-box main">
+          <img src="images/my-creation.jpg" alt="My creation inspired by honeycomb geometry" onerror="this.remove()" />
+          <span>📷 MY CREATION<br /><small>images/my-creation.jpg</small></span>
+        </div>
+        <div>
+          <h3>Title of my work</h3>
+          <p style="color:var(--muted)">
+            Describe what you made, what materials or tools you used, and how it was inspired by the
+            hexagon patterns above. (Edit this paragraph in index.html.)
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <p>Created by <strong class="gradient-text">kursanovbael</strong></p>
+    <p id="date"></p>
+  </footer>
+
+  <!-- ============ THREE.JS: 3D ROTATING HEXAGON ============ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    (function () {
+      var canvas = document.getElementById("hex-canvas");
+      if (!window.THREE) { canvas.style.display = "none"; return; } // CDN blocked: skip gracefully
+
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.z = 5;
+
+      // A hexagon is a cylinder with only 6 sides
+      var geometry = new THREE.CylinderGeometry(1.4, 1.4, 0.5, 6);
+      var solid = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
+        color: 0x8b5cf6, metalness: 0.5, roughness: 0.25
+      }));
+      // Glowing wireframe overlay
+      var wire = new THREE.LineSegments(
+        new THREE.EdgesGeometry(geometry),
+        new THREE.LineBasicMaterial({ color: 0xec4899 })
+      );
+      // Smaller inner hexagon (honeycomb cell look)
+      var inner = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.8, 0.8, 0.6, 6),
+        new THREE.MeshStandardMaterial({ color: 0x3b82f6, metalness: 0.4, roughness: 0.3 })
+      );
+
+      var group = new THREE.Group();
+      group.add(solid, wire, inner);
+      group.rotation.x = Math.PI / 2.6; // tilt so the hexagon face is visible
+      scene.add(group);
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      var p1 = new THREE.PointLight(0xec4899, 1.2); p1.position.set(4, 4, 4); scene.add(p1);
+      var p2 = new THREE.PointLight(0x3b82f6, 1.2); p2.position.set(-4, -3, 3); scene.add(p2);
+
+      // Keep canvas sharp at any size
+      function resize() {
+        var w = canvas.clientWidth, h = canvas.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      // Mouse / touch makes it spin faster
+      var boost = 0;
+      window.addEventListener("pointermove", function () { boost = 0.03; });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        group.rotation.z += 0.008 + boost;
+        group.rotation.y += 0.004;
+        boost *= 0.95;
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+
+    // ============ FOOTER DATE (updates automatically) ============
+    document.getElementById("date").textContent =
+      new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+    // ============ FADE-IN ON SCROLL ============
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  </script>
+</body>
+</html>
