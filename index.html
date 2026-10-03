@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexagons in Nature | Geometry Project</title>
+    <title>The Honeycomb Code | Geometry Project</title>
     <style>
         * {
             margin: 0;
@@ -12,618 +12,473 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            color: #333;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            background: rgba(15, 15, 30, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(100, 200, 255, 0.2);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #64c8ff, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        nav a {
-            color: #e0e0e0;
-            text-decoration: none;
-            margin: 0 1.5rem;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-
-        nav a:hover {
-            color: #64c8ff;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 2rem;
-            margin-top: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            flex: 1;
-            z-index: 10;
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #64c8ff, #a78bfa, #ff6b9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-content p {
-            font-size: 1.3rem;
-            color: #b0b0b0;
-            margin-bottom: 2rem;
-            max-width: 500px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, #64c8ff, #a78bfa);
-            color: #0f0f1e;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 8px 30px rgba(100, 200, 255, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(100, 200, 255, 0.5);
-        }
-
-        .hero-canvas {
-            flex: 1;
-            height: 600px;
-            position: relative;
-        }
-
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Sections */
-        section {
-            padding: 6rem 2rem;
-            position: relative;
-            z-index: 5;
-        }
-
-        .section-title {
-            font-size: 2.8rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, #64c8ff, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .container {
-            max-width: 1200px;
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Notice Section */
-        #notice {
-            background: linear-gradient(135deg, rgba(100, 200, 255, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
-            border-top: 1px solid rgba(100, 200, 255, 0.2);
+        nav {
+            background: #f8f9fa;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
-        .notice-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-top: 2rem;
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
         }
 
-        .notice-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #64c8ff;
+        nav a:hover {
+            color: #764ba2;
         }
 
-        .notice-text p {
-            font-size: 1.1rem;
-            color: #c0c0c0;
+        section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2.2rem;
             margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #555;
         }
 
         .image-placeholder {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, rgba(100, 200, 255, 0.2) 0%, rgba(167, 139, 250, 0.2) 100%);
-            border: 2px dashed rgba(100, 200, 255, 0.4);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            color: #999;
             font-size: 1rem;
-            text-align: center;
         }
 
-        /* Explain Section */
-        #explain {
-            background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(100, 200, 255, 0.05) 100%);
-            border-top: 1px solid rgba(167, 139, 250, 0.2);
-        }
-
-        .explain-content {
+        .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 2rem;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
         }
 
-        .math-box {
-            background: rgba(100, 200, 255, 0.1);
-            border: 2px solid rgba(100, 200, 255, 0.3);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .math-box h4 {
-            color: #64c8ff;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.1);
         }
 
-        .math-box p {
-            color: #d0d0d0;
-            margin-bottom: 0.8rem;
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
         }
 
-        .comparison-canvas {
-            width: 100%;
-            height: 400px;
-            background: rgba(15, 15, 30, 0.8);
-            border-radius: 10px;
-            border: 1px solid rgba(100, 200, 255, 0.2);
-        }
-
-        /* Create Section */
-        #create {
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(100, 200, 255, 0.05) 100%);
-            border-top: 1px solid rgba(255, 107, 157, 0.2);
-        }
-
-        .create-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 2rem;
-            align-items: center;
-        }
-
-        .create-content h3 {
-            color: #ff6b9d;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .create-content p {
-            color: #c0c0c0;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .create-visual {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.2) 0%, rgba(100, 200, 255, 0.2) 100%);
-            border-radius: 10px;
-            border: 2px dashed rgba(255, 107, 157, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(100, 200, 255, 0.2);
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
-                margin-top: 2rem;
-            }
-
-            .hero-content h1 {
-                font-size: 2.2rem;
-            }
-
-            .notice-grid,
-            .explain-content,
-            .create-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav a {
-                margin: 0 0.8rem;
-                font-size: 0.85rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Glow Effects */
-        .glow {
-            box-shadow: 0 0 20px rgba(100, 200, 255, 0.3);
-        }
-
-        /* Stats */
-        .stats {
+        .stat {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-            margin-top: 4rem;
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
-        .stat-card {
-            background: rgba(100, 200, 255, 0.1);
-            border: 1px solid rgba(100, 200, 255, 0.2);
-            border-radius: 10px;
-            padding: 2rem;
+        .stat-item {
             text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(100, 200, 255, 0.5);
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-top: 3px solid #667eea;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            color: #64c8ff;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: #a0a0a0;
-            font-size: 0.95rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-left: 4px solid #ffc107;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .canvas-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
         }
 
         @media (max-width: 768px) {
-            .stats {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .stat {
                 grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            section {
+                padding: 2rem 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <header>
+        <h1>🐝 The Honeycomb Code</h1>
+        <p>Why do bees build perfect hexagons? Discover the geometry and mathematics hidden in nature's most efficient architecture.</p>
+    </header>
+
     <nav>
-        <div class="logo">HEX</div>
-        <div>
-            <a href="#notice">Notice</a>
-            <a href="#explain">Explain</a>
-            <a href="#create">Create</a>
-        </div>
+        <a href="#notice">Notice</a>
+        <a href="#explain">Explain</a>
+        <a href="#subtopics">Other Examples</a>
+        <a href="#create">Create</a>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>The Honeycomb Code</h1>
-            <p>Why do bees build perfect hexagons? Discover the mathematics behind nature's most efficient architecture—and where this same geometry hides across the natural world.</p>
-            <button class="cta-button">Explore the Math</button>
-        </div>
-        <div class="hero-canvas">
-            <canvas id="heroCanvas"></canvas>
-        </div>
-    </section>
-
-    <!-- Notice Section -->
+    <!-- NOTICE SECTION -->
     <section id="notice">
-        <div class="container">
-            <h2 class="section-title">NOTICE: The Honeycomb Mystery</h2>
+        <h2>Notice: The Honeycomb Mystery</h2>
 
-            <div class="notice-grid">
-                <div class="notice-text">
-                    <h3>Why Bees Build Hexagons</h3>
-                    <p>Honeycomb is one of nature's perfect geometric structures. Each cell is an identical hexagon, fitting together with zero wasted space. Bees create this without measurement, without blueprints, without engineering school.</p>
-                    <p><strong>What I noticed:</strong> The precision and efficiency of honeycomb made me curious. Why hexagons specifically? What mathematics explains this design?</p>
-                    <p><strong>The Question:</strong> Is there a mathematical reason bees build hexagons? Could a different shape be better?</p>
-                    <div class="stats">
-                        <div class="stat-card">
-                            <div class="stat-number">120°</div>
-                            <div class="stat-label">Interior Angle</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">6</div>
-                            <div class="stat-label">Sides per Cell</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">3</div>
-                            <div class="stat-label">Meet at Each Vertex</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="image-placeholder">
-                    Your honeycomb image here — up close to show the hexagons clearly
-                </div>
+        <h3>What I Observed</h3>
+        <p>Honeycomb is one of nature's perfect geometric structures. Each cell is an identical hexagon, fitting together with zero wasted space. Bees build this without measurement, without blueprints, without any engineering training. Yet the precision is flawless.</p>
+
+        <div class="image-placeholder">
+            📸 Add your honeycomb image here — a close-up showing the hexagonal cells clearly
+        </div>
+
+        <h3>Why This Caught My Attention</h3>
+        <p>The more I looked at honeycomb, the more questions emerged:</p>
+        <ul>
+            <li>Why hexagons and not circles (which are more common in nature)?</li>
+            <li>Why not squares, which are easier to think about?</li>
+            <li>What makes hexagons special enough for bees to build them instinctively?</li>
+            <li>Is this just chance, or is there mathematics behind it?</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>The Central Question:</strong> Is there a mathematical reason bees build hexagons? What makes this shape more efficient than all the alternatives?
+        </div>
+
+        <h3>Quick Facts About Honeycomb</h3>
+        <div class="stat">
+            <div class="stat-item">
+                <div class="stat-number">120°</div>
+                <div class="stat-label">Interior Angle</div>
             </div>
-
-            <!-- Subtopics Section -->
-            <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(100, 200, 255, 0.2);">
-                <h3 style="text-align: center; color: #a78bfa; margin-bottom: 2rem; font-size: 1.8rem;">The Same Geometry Appears Everywhere</h3>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 3rem; font-size: 1.05rem;">Once you see hexagons in honeycomb, you start noticing them at every scale in nature. Here's where else this mathematics shows up:</p>
-
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-                    <div class="math-box" style="border-color: rgba(100, 200, 255, 0.3); background: rgba(100, 200, 255, 0.05);">
-                        <h4 style="color: #64c8ff;">Basalt Columns</h4>
-                        <p>When lava cools, it cracks into hexagonal columns. Same 120° angles, but scaled up to meters tall. The cooling process creates the same geometry as bees create with wax.</p>
-                    </div>
-                    <div class="math-box" style="border-color: rgba(167, 139, 250, 0.3); background: rgba(167, 139, 250, 0.05);">
-                        <h4 style="color: #a78bfa;">Dragonfly Compound Eyes</h4>
-                        <p>Dragonflies see through thousands of hexagonal units packed together. Tiny hexagons give them incredible vision without extra weight. Same optimization problem, microscopic scale.</p>
-                    </div>
-                    <div class="math-box" style="border-color: rgba(255, 107, 157, 0.3); background: rgba(255, 107, 157, 0.05);">
-                        <h4 style="color: #ff6b9d;">Plant Cell Packing</h4>
-                        <p>Cells in plant tissue arrange in hexagonal patterns. Even at the cellular level, nature uses this shape to minimize surface area and maximize efficiency.</p>
-                    </div>
-                </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Sides per Cell</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Meet at Each Vertex</div>
             </div>
         </div>
     </section>
 
-    <!-- Explain Section -->
+    <!-- EXPLAIN SECTION -->
     <section id="explain">
-        <div class="container">
-            <h2 class="section-title">EXPLAIN: Why Honeycomb is Perfect</h2>
+        <h2>Explain: Why Hexagons are Perfect</h2>
 
-            <div class="explain-content">
-                <div>
-                    <div class="math-box">
-                        <h4>The Efficiency Problem Bees Solve</h4>
-                        <p>Bees have a challenge: store the most honey using the least wax. Wax is expensive to produce. So they need a shape that:</p>
-                        <ul style="color: #a0a0a0; margin-left: 1rem;">
-                            <li>✓ Uses minimal material (perimeter)</li>
-                            <li>✓ Maximizes storage (area)</li>
-                            <li>✓ Tiles perfectly with no gaps</li>
-                            <li>✓ Is strong enough to hold honey</li>
-                        </ul>
-                        <p style="margin-top: 1rem;"><strong>The Solution: Hexagons</strong></p>
-                    </div>
+        <h3>The Problem Bees Are Solving</h3>
+        <p>Bees face a critical efficiency challenge: <strong>store the most honey while using the least wax.</strong></p>
+        <p>Wax is expensive. Each bee must consume about 12 pounds of honey to produce 1 pound of wax. So bees need a shape that:</p>
+        <ul>
+            <li>Maximizes storage area (for honey)</li>
+            <li>Minimizes perimeter (to use less wax)</li>
+            <li>Tiles perfectly with zero gaps (no wasted space)</li>
+            <li>Is structurally strong (to hold the honey weight)</li>
+        </ul>
 
-                    <div class="math-box">
-                        <h4>Why Hexagons Win</h4>
-                        <p><strong>Area-to-Perimeter Ratio:</strong> Among shapes that tile perfectly, hexagons have the BEST ratio.</p>
-                        <p style="margin-top: 0.8rem;">For storing the same amount of honey:</p>
-                        <ul style="color: #a0a0a0; margin-left: 1rem;">
-                            <li>Triangle: needs 27% MORE wax</li>
-                            <li>Square: needs 10% MORE wax</li>
-                            <li>Hexagon: uses LEAST wax ✓</li>
-                        </ul>
-                    </div>
+        <div class="highlight">
+            <strong>The Solution: Hexagons</strong> — The only shape that wins on all four criteria.
+        </div>
 
-                    <div class="math-box">
-                        <h4>The Geometry That Works</h4>
-                        <p>120° angles = Perfect fit. Three hexagons meet at each vertex: 3 × 120° = 360°</p>
-                        <p style="margin-top: 0.8rem;">This is the ONLY angle that works for a regular polygon tiling a plane with zero waste. Bees don't calculate this—they've evolved to build it instinctively.</p>
-                    </div>
+        <h3>The Mathematics: Why Hexagons Are Optimal</h3>
+
+        <p><strong>The Area-to-Perimeter Ratio:</strong></p>
+        <p>Among all shapes that can perfectly tile a flat surface, hexagons have the best ratio of enclosed area to perimeter used.</p>
+
+        <div class="grid">
+            <div class="card">
+                <h4>Triangle</h4>
+                <p>To store the same amount of honey as one hexagon, you'd need a triangle with <strong>27% MORE perimeter.</strong></p>
+                <p>That means 27% more wax. ❌</p>
+            </div>
+            <div class="card">
+                <h4>Square</h4>
+                <p>A square needs <strong>10% MORE perimeter</strong> than a hexagon to enclose the same area.</p>
+                <p>That's still more wax than necessary. ❌</p>
+            </div>
+            <div class="card">
+                <h4>Hexagon</h4>
+                <p>Uses the LEAST perimeter for any regular polygon that tiles perfectly.</p>
+                <p>Minimum wax, maximum honey. ✅</p>
+            </div>
+        </div>
+
+        <h3>The Geometry: Perfect Tiling</h3>
+        <p>Only three regular polygons can tile a flat plane perfectly (with no gaps or overlaps):</p>
+
+        <div class="grid">
+            <div class="card">
+                <h4>Equilateral Triangle</h4>
+                <p><strong>Interior angle: 60°</strong></p>
+                <p>At each vertex: 6 triangles × 60° = 360° ✓</p>
+            </div>
+            <div class="card">
+                <h4>Square</h4>
+                <p><strong>Interior angle: 90°</strong></p>
+                <p>At each vertex: 4 squares × 90° = 360° ✓</p>
+            </div>
+            <div class="card">
+                <h4>Regular Hexagon</h4>
+                <p><strong>Interior angle: 120°</strong></p>
+                <p>At each vertex: 3 hexagons × 120° = 360° ✓</p>
+            </div>
+        </div>
+
+        <p><strong>Why 120° is special:</strong> Three hexagons meeting at a point create a perfect fit with zero waste. This geometry allows for maximum storage in the minimum space.</p>
+
+        <h3>The Physics: Structural Strength</h3>
+        <p>Hexagons aren't just mathematically efficient—they're also structurally superior. When you fill a hexagon with honey (adding weight), the load distributes evenly across all six walls. The forces spread in three primary directions, creating exceptional strength for the material used.</p>
+        <p>Compare this to a square, where corners create weak points, or a circle, which would require more material to achieve the same strength.</p>
+
+        <div class="canvas-container">
+            <p style="color: #999; margin-bottom: 1rem;">📊 Interactive Comparison: Efficiency Ratio</p>
+            <canvas id="comparisonCanvas" width="100%" height="300"></canvas>
+        </div>
+    </section>
+
+    <!-- SUBTOPICS SECTION -->
+    <section id="subtopics">
+        <h2>Where Else This Geometry Appears</h2>
+        <p>Once you see hexagons in honeycomb, you start noticing them everywhere in nature. The same mathematics that governs bee architecture appears at completely different scales, serving different purposes.</p>
+
+        <div class="grid">
+            <div class="card">
+                <h4>🌋 Basalt Columns</h4>
+                <p>When lava cools slowly, it contracts uniformly and cracks into hexagonal columns. This is the same 120° geometry as honeycomb, but scaled up to meter-tall structures. The cooling process naturally creates the most efficient packing.</p>
+                <p style="color: #999; font-size: 0.9rem;">Examples: Giant's Causeway (Ireland), Devils Postpile (California)</p>
+                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
+                    📸 Basalt columns image
                 </div>
+            </div>
 
-                <div>
-                    <canvas id="comparisonCanvas" class="comparison-canvas"></canvas>
+            <div class="card">
+                <h4>👁️ Dragonfly Compound Eyes</h4>
+                <p>Dragonflies see through thousands of hexagonal units (ommatidia) packed together. At the microscopic scale, nature uses hexagons to maximize visual resolution while minimizing weight. Same optimization principle, different application.</p>
+                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
+                    📸 Dragonfly eye microscope image
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>🌿 Plant Cells</h4>
+                <p>Plant cells arrange in hexagonal patterns in stems and leaves. Even at the cellular level, hexagons appear because they minimize surface area and maximize packing efficiency—the same mathematics that governs honeycomb and basalt.</p>
+                <div class="image-placeholder" style="padding: 2rem; margin-top: 1rem;">
+                    📸 Plant cell tessellation image
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Create Section -->
+    <!-- CREATE SECTION -->
     <section id="create">
-        <div class="container">
-            <h2 class="section-title">CREATE: My Inspired Work</h2>
+        <h2>Create: What I Made</h2>
 
-            <div class="create-grid">
-                <div class="create-content">
-                    <h3>What I Created</h3>
-                    <p><strong>My idea:</strong> [Add your creation here: a 3D model, an interactive tool, a visualization, a piece of art, a comparison study, etc. What did you make inspired by honeycomb?]</p>
-                    <p><strong>How it connects:</strong> [Explain how your creation reflects the mathematics of honeycomb. What mathematical principles from your research did you apply?]</p>
-                    <p><strong>The math behind it:</strong> [Describe specific choices you made based on the geometry you discovered. For example: angles you used, proportions you calculated, efficiency ratios you tested.]</p>
-                    <p><strong>What I want you to notice:</strong> [What should someone see when they look at your work? What draws them in? What question does your creation raise?]</p>
-                </div>
-                <div class="create-visual">
-                    Replace with image or visualization of your creation
-                </div>
-            </div>
+        <h3>My Creation</h3>
+        <p>After investigating honeycomb geometry, I created <strong>[describe what you made here: a visual comparison tool, a 3D model, an artwork, a physical structure, a data visualization, etc.]</strong></p>
+
+        <div class="image-placeholder">
+            📸 Add an image of your creation here
         </div>
+
+        <h3>How It Connects to the Mathematics</h3>
+        <p><strong>Explain how your creation reflects the honeycomb mathematics you discovered.</strong> For example:</p>
+        <ul>
+            <li>What mathematical principles did you apply?</li>
+            <li>What angles, ratios, or proportions did you use?</li>
+            <li>How does your creation demonstrate hexagon efficiency or geometry?</li>
+        </ul>
+
+        <h3>The Choices I Made</h3>
+        <p><strong>Describe specific design decisions based on your research:</strong></p>
+        <ul>
+            <li>Why did you choose the materials, colors, or dimensions you used?</li>
+            <li>What calculations or measurements guided your choices?</li>
+            <li>How do these choices reflect the mathematics of honeycomb?</li>
+        </ul>
+
+        <h3>What I Hope You Notice</h3>
+        <p><strong>Complete this:</strong> When you look at my work, I want you to notice...</p>
+        <p>This is your chance to direct the viewer's attention to the most important mathematical or visual aspect of your creation. What insight or question should they take away?</p>
     </section>
 
-    <!-- Footer -->
     <footer>
-        <p>Geometry Project | Midterm 2026 | ATA-404</p>
+        <p><strong>The Honeycomb Code</strong> | Geometry Midterm Project 2026</p>
+        <p>📍 By: ATA-404</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Mathematics is everywhere. Once you learn to see it, you can't unsee it.</p>
     </footer>
 
-    <!-- Three.js for 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Hero 3D Hexagon
-        function initHeroCanvas() {
-            const canvas = document.getElementById('heroCanvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-            renderer.setClearColor(0x000000, 0);
-            camera.position.z = 2;
-
-            // Create hexagon geometry
-            const geometry = new THREE.CylinderGeometry(1, 1, 0.2, 6);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x64c8ff,
-                emissive: 0x2a5a7f,
-                shininess: 100
-            });
-            const hexagon = new THREE.Mesh(geometry, material);
-            scene.add(hexagon);
-
-            // Lighting
-            const light1 = new THREE.DirectionalLight(0xffffff, 0.8);
-            light1.position.set(5, 5, 5);
-            scene.add(light1);
-
-            const light2 = new THREE.DirectionalLight(0xa78bfa, 0.6);
-            light2.position.set(-5, -5, 5);
-            scene.add(light2);
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-            scene.add(ambientLight);
-
-            // Animation
-            function animate() {
-                requestAnimationFrame(animate);
-                hexagon.rotation.x += 0.005;
-                hexagon.rotation.y += 0.008;
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            // Handle resize
-            window.addEventListener('resize', () => {
-                const width = canvas.clientWidth;
-                const height = canvas.clientHeight;
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                renderer.setSize(width, height);
-            });
-        }
-
-        // Comparison Canvas - Shape visualization
-        function initComparisonCanvas() {
+        // Comparison Chart
+        function drawComparison() {
             const canvas = document.getElementById('comparisonCanvas');
+            if (!canvas) return;
+
             const ctx = canvas.getContext('2d');
+            const width = canvas.offsetWidth;
+            const height = 300;
 
-            // Set canvas size
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
 
-            const centerY = canvas.height / 2;
             const shapes = [
-                { name: 'Triangle', ratio: 0.6, color: '#ff6b9d' },
-                { name: 'Square', ratio: 0.8, color: '#ffc107' },
-                { name: 'Hexagon', ratio: 1.0, color: '#64c8ff' }
+                { name: 'Triangle', ratio: 0.73, color: '#ff6b6b' },
+                { name: 'Square', ratio: 0.90, color: '#ffc107' },
+                { name: 'Hexagon', ratio: 1.00, color: '#667eea' }
             ];
 
-            const barWidth = 60;
-            const spacing = 100;
-            const startX = 100;
+            const padding = 40;
+            const graphWidth = width - 2 * padding;
+            const graphHeight = height - 2 * padding;
+            const barSpacing = graphWidth / shapes.length;
 
-            shapes.forEach((shape, index) => {
-                const x = startX + index * spacing;
-                const barHeight = shape.ratio * 150;
+            // Draw title
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+            ctx.textAlign = 'center';
+            ctx.fillText('Efficiency Ratio (Higher = Better)', width / 2, 25);
 
-                // Background
-                ctx.fillStyle = 'rgba(100, 200, 255, 0.1)';
-                ctx.fillRect(x - barWidth/2, centerY - 80, barWidth, 160);
+            // Draw bars
+            shapes.forEach((shape, i) => {
+                const x = padding + i * barSpacing + barSpacing / 2;
+                const barHeight = shape.ratio * (graphHeight - 40);
+                const barWidth = 60;
+
+                // Bar background
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(x - barWidth / 2, padding + graphHeight - 40, barWidth, 40);
 
                 // Bar
                 ctx.fillStyle = shape.color;
-                ctx.fillRect(x - barWidth/2, centerY - barHeight/2, barWidth, barHeight);
+                ctx.fillRect(x - barWidth / 2, padding + graphHeight - 40 - barHeight, barWidth, barHeight);
 
                 // Border
                 ctx.strokeStyle = shape.color;
                 ctx.lineWidth = 2;
-                ctx.strokeRect(x - barWidth/2, centerY - barHeight/2, barWidth, barHeight);
+                ctx.strokeRect(x - barWidth / 2, padding + graphHeight - 40 - barHeight, barWidth, barHeight);
 
                 // Label
-                ctx.fillStyle = '#e0e0e0';
-                ctx.font = 'bold 14px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText(shape.name, x, centerY + 100);
+                ctx.fillStyle = '#333';
+                ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+                ctx.fillText(shape.name, x, padding + graphHeight);
 
-                // Ratio
+                // Percentage
                 ctx.fillStyle = shape.color;
-                ctx.font = 'bold 16px Arial';
-                ctx.fillText((shape.ratio * 100).toFixed(0) + '%', x, centerY - barHeight/2 - 10);
+                ctx.font = 'bold 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+                ctx.fillText((shape.ratio * 100).toFixed(0) + '%', x, padding + graphHeight - 50 - barHeight);
             });
-
-            // Title
-            ctx.fillStyle = '#a0a0a0';
-            ctx.font = '14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Efficiency Ratio (Higher = Better)', canvas.width / 2, 30);
         }
 
-        // Initialize when page loads
-        window.addEventListener('load', () => {
-            initHeroCanvas();
+        window.addEventListener('load', drawComparison);
+        window.addEventListener('resize', drawComparison);
 
-            // Initialize comparison after a short delay
-            setTimeout(() => {
-                initComparisonCanvas();
-            }, 100);
-        });
-
-        // Smooth scroll
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
